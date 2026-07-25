@@ -723,7 +723,8 @@ struct NoiseEncryptionServiceTests {
                 message: spoofedMessage1
             )
         )
-        try? await Task.sleep(nanoseconds: 35_000_000)
+        // Exercise replacement before yielding: the test runner may resume a
+        // short sleep after the fixed responder deadline under parallel load.
         _ = try #require(
             try bob.processHandshakeMessage(
                 from: alicePeerID,
